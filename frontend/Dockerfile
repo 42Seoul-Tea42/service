@@ -1,15 +1,17 @@
-FROM	node:latest
+FROM node:current-slim
 
-WORKDIR /usr/app
+WORKDIR /usr/app/srcs
 
 RUN		apt-get update \
 		&& apt-get install -y dumb-init \
-		&& npm install -g npm
+		&& npm install pnpm 
 
-COPY	init.sh .
+COPY 	package*.json ./
 
-RUN		chmod 777 init.sh
+RUN		pnpm install
 
 ENTRYPOINT	["/usr/bin/dumb-init", "--"]
 
-CMD		["./init.sh"]
+COPY . .
+
+CMD ["pnpm", "run", "dev"]
