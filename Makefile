@@ -16,4 +16,10 @@ re		:
 	make fclean
 	make all
 
+LINK_FILES	:=	Dockerfile.frontend \
+				.dockerignore \
+				init_react.sh
+link:
+	$(foreach file, $(LINK_FILES), ln frontend/$(file) ../frontend/;)
+
 .PHONY	: all down clean fclea re
