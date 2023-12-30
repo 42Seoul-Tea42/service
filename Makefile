@@ -17,4 +17,4 @@ re		:
 	make fclean
 	make all
 
-.PHONY	: all down clean fclea re
+.PHONY	: all down clean fclean re
