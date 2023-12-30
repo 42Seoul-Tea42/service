@@ -2,7 +2,7 @@
 
 FROM node:current-slim
 
-WORKDIR /usr/app/srcs
+WORKDIR /usr/app/
 
 COPY 	. .
 

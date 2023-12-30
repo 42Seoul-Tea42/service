@@ -1,7 +1,7 @@
 #!/bin/sh
-# Hard link info : service/ -> frontend/
 
-pnpm cache clear
-pnpm install
+pnpm install --prefix srcs
 
-tail -f /dev/null
+#pnpm add --prefix srcs --save-dev package-name
+
+pnpm --prefix srcs run dev
