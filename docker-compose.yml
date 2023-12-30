@@ -20,8 +20,8 @@ services:
     #         - backend
 
     frontend:
-        container_name: frontend
-        image: frontend:tea42
+        container_name: react
+        image: react:tea42
         build: 
            context: ../frontend/
            dockerfile: Dockerfile
