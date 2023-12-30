@@ -23,7 +23,7 @@ services:
         container_name: react
         image: react:tea42
         build: 
-           context: ../frontend/
+           context: frontend/
            dockerfile: Dockerfile
         volumes:
             - front_repo:/usr/app/srcs
@@ -73,7 +73,7 @@ volumes:
         driver_opts:
             type: none
             o: bind
-            device: "${PWD}/../frontend"
+            device: "${PWD}/frontend"
     # backend:
     #     driver: local
     #     driver_opts:

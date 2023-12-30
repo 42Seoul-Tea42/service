@@ -8,8 +8,7 @@ COPY 	. .
 
 RUN		apt-get update \
 		&& apt-get install -y dumb-init \
-		&& npm install -g pnpm \
-		&& pnpm update
+		&& npm install -g pnpm
 
 RUN		chmod +x init_react.sh
 
