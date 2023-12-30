@@ -1,17 +1,20 @@
+# Hard link info : service/ -> frontend/
+
 FROM node:current-slim
 
 WORKDIR /usr/app/srcs
 
+COPY 	. .
+
 RUN		apt-get update \
 		&& apt-get install -y dumb-init \
-		&& npm install pnpm 
+		&& npm install -g pnpm \
+		&& pnpm update
 
-COPY 	package*.json ./
+RUN		chmod +x init_react.sh
 
-RUN		pnpm install
 
+# graceful shutdown
 ENTRYPOINT	["/usr/bin/dumb-init", "--"]
 
-COPY . .
-
-CMD ["pnpm", "run", "dev"]
+CMD ["sh", "init_react.sh"]

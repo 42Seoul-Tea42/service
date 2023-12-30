@@ -24,7 +24,7 @@ services:
         image: frontend:tea42
         build: 
            context: ../frontend/
-           dockerfile: Dockerfile.frontend
+           dockerfile: Dockerfile
         volumes:
             - front_repo:/usr/app/srcs
         networks:

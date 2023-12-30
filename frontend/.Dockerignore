@@ -1,4 +1,5 @@
 # Hard link info : service/ -> frontend/
+
 # node_modules 디렉토리는 이미지에 포함하지 않음
 node_modules
 
