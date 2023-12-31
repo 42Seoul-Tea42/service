@@ -1,17 +1,30 @@
 #!/usr/bin/env bash
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    init_docker.sh                                     :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: aguiot-- <aguiot--@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2019/11/18 08:17:08 by aguiot--          #+#    #+#              #
-#    Updated: 2020/02/20 14:34:42 by aguiot--         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 # https://github.com/alexandregv/42toolbox
+
+################################################################################
+# Colors
+blue=$'\033[0;34m'
+red=$'\033[1;31m'
+cyan=$'\033[1;96m'
+reset=$'\033[0;39m'
+################################################################################
+
+# Function to display warning and get user input
+display_warning() {
+    echo "${red}Warning: This script will modify Docker installation paths.${reset}"
+    read -n1 -p "${blue}Do you want to continue? [y/${cyan}N${blue}]${reset} " input
+    echo ""
+    
+    if [ -z "$input" ] || [ "$input" != "y" ]; then
+        echo "${blue}Script aborted.${reset}"
+        exit 1
+    fi
+}
+
+# Display warning and get user input
+display_warning
+
+################################################################################
 
 # Ensure USER variabe is set
 [ -z "${USER}" ] && export USER=$(whoami)
@@ -22,11 +35,6 @@
 docker_destination="/goinfre/$USER/docker" #=> Select docker destination (goinfre is a good choice)
 
 ################################################################################
-
-# Colors
-blue=$'\033[0;34m'
-cyan=$'\033[1;96m'
-reset=$'\033[0;39m'
 
 # Uninstall docker, docker-compose and docker-machine if they are installed with brew
 brew uninstall -f docker docker-compose docker-machine &>/dev/null ;:
@@ -44,11 +52,7 @@ pkill Docker
 
 # Ask to reset destination if it already exists
 if [ -d "$docker_destination" ]; then
-	read -n1 -p "${blue}Folder ${cyan}$docker_destination${blue} already exists, do you want to reset it? [y/${cyan}N${blue}]${reset} " input
-	echo ""
-	if [ -n "$input" ] && [ "$input" = "y" ]; then
-		rm -rf "$docker_destination"/{com.docker.{docker,helper},.docker} &>/dev/null ;:
-	fi
+	rm -rf "$docker_destination"/{com.docker.{docker,helper},.docker} &>/dev/null ;:
 fi
 
 # Unlinks all symlinks, if they are
@@ -70,4 +74,4 @@ ln -sf "$docker_destination"/.docker ~/.docker
 # Start Docker for Mac
 open -g -a Docker
 
-echo "${cyan}Docker${blue} is now starting! Please report any bug to: ${cyan}aguiot--${reset}"
+echo "${cyan}Docker${blue} is now starting!${reset}"
