@@ -1,92 +1,92 @@
 version: "3"
 
 services:
-    # nginx:
-    #     container_name: nginx
-    #     build: ./nginx
-    #     image: nginx:tea42
-    #     # volumes:
-    #     #     - frontend:/usr/app/srcs
-    #     networks:
-    #         - tea42_network
-    #     env_file:
-    #         - .env
-    #     ports:
-    #         - "80:80"
-    #     restart: always
-    #     depends_on:
-    #         - postgresql
-    #         # - frontend
-    #         - backend
+  # nginx:
+  #     container_name: nginx
+  #     build: ./nginx
+  #     image: nginx:tea42
+  #     # volumes:
+  #     #     - frontend:/usr/app/srcs
+  #     networks:
+  #         - tea42_network
+  #     env_file:
+  #         - .env
+  #     ports:
+  #         - "80:80"
+  #     restart: always
+  #     depends_on:
+  #         - postgresql
+  #         # - frontend
+  #         - backend
 
-    frontend:
-        container_name: react
-        image: react:tea42
-        build: 
-           context: service/frontend/
-           dockerfile: Dockerfile
-        volumes:
-            - front_repo:/usr/app/srcs
-        networks:
-            - tea42_network
-        env_file:
-            - .env
-        ports:
-            - "3000:3000"
-        expose:
-            - "3000"
-        restart: always
+  frontend:
+    container_name: next-dev
+    image: next-dev:tea42
+    build:
+      context: service/frontend/
+      dockerfile: Dockerfile
+    volumes:
+      - front_repo:/usr/app/srcs
+    networks:
+      - tea42_network
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+    restart: always
 
-    # backend:
-    #     container_name: backend
-    #     build: ./backend
-    #     image: backend:tea42
-    #     volumes:
-    #         - backend:/usr/app/srcs
-    #     networks:
-    #         - tea42_network
-    #     env_file:
-    #         - .env
-    #     expose:
-    #         - "5000"
-    #     restart: always
-    #     depends_on:
-    #         - postgresql
+  # backend:
+  #     container_name: backend
+  #     build: ./backend
+  #     image: backend:tea42
+  #     volumes:
+  #         - backend:/usr/app/srcs
+  #     networks:
+  #         - tea42_network
+  #     env_file:
+  #         - .env
+  #     expose:
+  #         - "5000"
+  #     restart: always
+  #     depends_on:
+  #         - postgresql
 
-    # postgresql:
-    #     container_name: postgresql
-    #     build: ./postgresql
-    #     image: postgresql:tea42
-    #     expose:
-    #         - "3306"
-    #     volumes:
-    #         - postgresql:/var/lib/postgresql/data
-    #     env_file:
-    #         - .env
-    #     networks:
-    #         - tea42_network
-    #     restart: always
+  # postgresql:
+  #     container_name: postgresql
+  #     build: ./postgresql
+  #     image: postgresql:tea42
+  #     expose:
+  #         - "3306"
+  #     volumes:
+  #         - postgresql:/var/lib/postgresql/data
+  #     env_file:
+  #         - .env
+  #     networks:
+  #         - tea42_network
+  #     restart: always
 
 volumes:
-    front_repo:
-        driver: local
-        driver_opts:
-            type: none
-            o: bind
-            device: "${PWD}/frontend"
-    # backend:
-    #     driver: local
-    #     driver_opts:
-    #         type: none
-    #         o: bind
-    #         device: "${PWD}/backend"
-    # postgresql:
-    #     driver: local
-    #     driver_opts:
-    #         type: none
-    #         o: bind
-    #         device: "${PWD}/service/postgresql/database"
+  front_repo:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${PWD}/frontend"
+  # backend:
+  #     driver: local
+  #     driver_opts:
+  #         type: none
+  #         o: bind
+  #         device: "${PWD}/backend"
+  # postgresql:
+  #     driver: local
+  #     driver_opts:
+  #         type: none
+  #         o: bind
+  #         device: "${PWD}/service/postgresql/database"
 
 networks:
-    tea42_network:
-        driver: bridge
+  tea42_network:
+    driver: bridge
