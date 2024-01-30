@@ -10,10 +10,8 @@ RUN		apt-get update \
 		&& apt-get install -y dumb-init \
 		&& npm install -g pnpm
 
-RUN		chmod +x init_react.sh
+RUN		chmod +x init_package.sh
 
-
-# graceful shutdown
 ENTRYPOINT	["/usr/bin/dumb-init", "--"]
 
-CMD ["sh", "init_react.sh"]
+CMD ["sh", "init_package.sh"]
