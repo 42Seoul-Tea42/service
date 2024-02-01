@@ -5,12 +5,16 @@ RUN apt-get update
 RUN mkdir -p /var/lib/postgresql/data
 RUN chown -R postgres:postgres /var/lib/postgresql/data
 
-RUN echo "CREATE DATABASE ${DB_NAME};" > /docker-entrypoint-initdb.d/init_psql.sql && \
-    echo "CREATE USER ${POSTGRES_USER_ID} WITH SUPERUSER PASSWORD '${POSTGRES_USER_PASSWORD}';" >> /docker-entrypoint-initdb.d/init_psql.sql && \
-    echo "GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO ${POSTGRES_USER_ID};" >> /docker-entrypoint-initdb.d/init_psql.sql && \
-    echo "\\\c ${DB_NAME};" >> /docker-entrypoint-initdb.d/init_psql.sql && \
-    echo "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO ${POSTGRES_USER_ID};" >> /docker-entrypoint-initdb.d/init_psql.sql && \
-    echo "GRANT ALL PRIVILEGES ON SCHEMA public TO ${POSTGRES_USER_ID};" >> /docker-entrypoint-initdb.d/init_psql.sql
+ARG POSTGRES_NAME
+ARG POSTGRES_USER
+ARG POSTGRES_PASSWORD
+
+RUN echo "CREATE DATABASE ${POSTGRES_NAME};" > /docker-entrypoint-initdb.d/init_psql.sql && \
+    echo "CREATE USER ${POSTGRES_USER} WITH SUPERUSER PASSWORD '${POSTGRES_PASSWORD}';" >> /docker-entrypoint-initdb.d/init_psql.sql && \
+    echo "GRANT ALL PRIVILEGES ON DATABASE ${POSTGRES_NAME} TO ${POSTGRES_USER};" >> /docker-entrypoint-initdb.d/init_psql.sql && \
+    echo "\\\c ${POSTGRES_NAME};" >> /docker-entrypoint-initdb.d/init_psql.sql && \
+    echo "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO ${POSTGRES_USER};" >> /docker-entrypoint-initdb.d/init_psql.sql && \
+    echo "GRANT ALL PRIVILEGES ON SCHEMA public TO ${POSTGRES_USER};" >> /docker-entrypoint-initdb.d/init_psql.sql
 
 RUN chown postgres:postgres /docker-entrypoint-initdb.d/init_psql.sql
 
