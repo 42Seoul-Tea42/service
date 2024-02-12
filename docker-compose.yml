@@ -2,26 +2,26 @@ version: "3"
 
 services:
   nginx:
-      container_name: nginx
-      build: ./service/nginx
-      image: nginx:tea42
-      # volumes:
-      #     - frontend:/usr/app/srcs
-      networks:
-          - tea42_network
-      env_file:
-          - .env
-      ports:
-          - "80:80"
-      restart: always
-      depends_on:
-          - postgresql
-          - frontend
-          - backend
+    container_name: nginx
+    build: ./service/nginx
+    image: nginx:tea42
+    # volumes:
+    #     - frontend:/usr/app/srcs
+    networks:
+      - tea42_network
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+    restart: always
+    depends_on:
+      - postgresql
+      - frontend
+      - backend
 
   frontend:
-    container_name: next-dev
-    image: next-dev:tea42
+    container_name: next
+    image: next:tea42
     build:
       context: service/frontend/
       dockerfile: Dockerfile
@@ -38,42 +38,42 @@ services:
     restart: always
 
   backend:
-      container_name: backend
-      build: ./service/backend
-      image: backend:tea42
-      volumes:
-          - backend:/usr/app/srcs
-      networks:
-          - tea42_network
-      env_file:
-          - .env
-      ports:
-          - "8080:5000"
+    container_name: backend
+    build: ./service/backend
+    image: backend:tea42
+    volumes:
+      - backend:/usr/app/srcs
+    networks:
+      - tea42_network
+    env_file:
+      - .env
+    ports:
+      - "8080:5000"
     # expose가 맞음, port 열어둔 건 테스트 용입니다!
     #   expose:
     #       - "5000"
-      restart: always
-      depends_on:
-          - postgresql
+    restart: always
+    depends_on:
+      - postgresql
 
   postgresql:
-      container_name: postgresql
-      build:
-        context: ./service/postgresql
-        args:
-            - POSTGRES_NAME=${POSTGRES_NAME}
-            - POSTGRES_USER=${POSTGRES_USER}
-            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      image: postgresql:tea42
-      expose:
-          - "5432"
-      volumes:
-          - postgresql:/var/lib/postgresql/data
-      env_file:
-          - .env
-      networks:
-          - tea42_network
-      restart: always
+    container_name: postgresql
+    build:
+      context: ./service/postgresql
+      args:
+        - POSTGRES_NAME=${POSTGRES_NAME}
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    image: postgresql:tea42
+    expose:
+      - "5432"
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+    env_file:
+      - .env
+    networks:
+      - tea42_network
+    restart: always
 
 volumes:
   front_repo:
@@ -83,17 +83,17 @@ volumes:
       o: bind
       device: "${PWD}/frontend"
   backend:
-      driver: local
-      driver_opts:
-          type: none
-          o: bind
-          device: "${PWD}/backend"
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${PWD}/backend"
   postgresql:
-      driver: local
-      driver_opts:
-          type: none
-          o: bind
-          device: "${PWD}/service/postgresql/database"
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${PWD}/service/postgresql/database"
 
 networks:
   tea42_network:
