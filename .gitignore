@@ -8,3 +8,5 @@
 #meta data
 .DS_Store
 .swp
+
+/postgresql/database
