@@ -24,13 +24,4 @@ RUN     apt-get update \
 
 RUN     groupadd -r beTeam && useradd -r -g beTeam beMaster
 
-# RUN     mkdir -p /usr/app/srcs/app
-
-# 테스트용
-ENV FLASK_ENV=development
-
-# CMD ["uwsgi", "--socket", "127.0.0.1:8080", "--protocol=http", "-w", "app:app", "--uid", "beMaster"]
-CMD ["uwsgi", "--socket", ":5000", "--protocol=http", "-w", "wsgi:application", "--http-timeout", "3600", "--py-autoreload", "1"]
-
-# CMD ["uwsgi", "--socket", ":5000", "--protocol=http", "-w", "wsgi:application"]
-# CMD [ "uwsgi", "--uid", "beMaster", "--gid", "beTeam", "uwsgi.ini" ]
+CMD ["uwsgi", "--uid", "beMaster", "uwsgi.ini"]
