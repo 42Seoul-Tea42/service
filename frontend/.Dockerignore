@@ -1,5 +1,8 @@
 # Hard link info : service/ -> frontend/
 
+# app은 직접 마운트
+app
+
 # node_modules 디렉토리는 이미지에 포함하지 않음
 node_modules
 
