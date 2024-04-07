@@ -1,25 +1,25 @@
 
-FROM node:current-slim AS builder
+# FROM node:current-slim AS builder
 
-WORKDIR /usr/app/
+# WORKDIR /usr/app/
 
-RUN		apt-get update \
-		&& apt-get install -y dumb-init \
-		&& npm install -g pnpm
+# RUN		apt-get update \
+# 		&& apt-get install -y dumb-init \
+# 		&& npm install -g pnpm
 
-COPY	frontend/package.json .
+# COPY	frontend/package.json .
 
-RUN		pnpm install
+# RUN		pnpm install
 
-COPY    frontend/ .
+# COPY    frontend/ .
 
-RUN     pnpm run build
+# RUN     pnpm run build
 
 
 FROM    nginx
 
 # front static resources move
-COPY --from=builder usr/app/out /usr/share/nginx/html
+# COPY --from=builder usr/app/out /usr/share/nginx/html
 
 # Install nginx
 RUN		apt-get update
