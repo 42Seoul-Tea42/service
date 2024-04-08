@@ -19,7 +19,9 @@ RUN     apt-get update \
         && pip install bcrypt \
         && pip install PyJWT \
         && pip install flask-jwt-extended \
-        && pip install flask-socketio\
+        && pip install flask-socketio \
+        && pip install geopy \
+        && pip install requests \
         && ln -s /usr/local/bin/uwsgi /usr/bin/uwsgi
 
 RUN     groupadd -r beTeam && useradd -r -g beTeam beMaster
