@@ -5,7 +5,7 @@ services:
     container_name: next-dev
     image: next-dev:tea42
     build:
-      context: service/frontend/
+      context: frontend/
       dockerfile: Dockerfile
     volumes:
       - front_repo:/usr/app/srcs
@@ -25,7 +25,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: "${PWD}/frontend"
+      device: "${PWD}/frontend/app"
 
 networks:
   tea42_network:
