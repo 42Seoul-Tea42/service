@@ -1,4 +1,4 @@
-
+# # Build frontend
 # FROM node:current-slim AS builder
 
 # WORKDIR /usr/app/
