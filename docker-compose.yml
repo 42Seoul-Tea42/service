@@ -54,6 +54,15 @@ services:
       postgresql:
         condition: service_healthy
 
+  redis:
+    container_name: redis
+    image: redis:6.2.5
+    expose:
+      - "6379"
+    networks:
+      - tea42_network
+    restart: always
+
   postgresql:
     container_name: postgresql
     build:
