@@ -10,9 +10,7 @@ ARG POSTGRES_DB_NAME
 ARG POSTGRES_USER
 ARG POSTGRES_PASSWORD
 
-RUN echo "CREATE EXTENSION postgis;" > /docker-entrypoint-initdb.d/init_psql.sql && \
-    echo "CREATE EXTENSION postgis_topology;" >> /docker-entrypoint-initdb.d/init_psql.sql && \
-    echo "CREATE DATABASE ${POSTGRES_DB_NAME};" >> /docker-entrypoint-initdb.d/init_psql.sql && \
+RUN echo "CREATE DATABASE ${POSTGRES_DB_NAME};" > /docker-entrypoint-initdb.d/init_psql.sql && \
     echo "CREATE USER ${POSTGRES_USER} WITH SUPERUSER PASSWORD '${POSTGRES_PASSWORD}';" >> /docker-entrypoint-initdb.d/init_psql.sql && \
     echo "GRANT ALL PRIVILEGES ON DATABASE ${POSTGRES_DB_NAME} TO ${POSTGRES_USER};" >> /docker-entrypoint-initdb.d/init_psql.sql && \
     echo "\\\c ${POSTGRES_DB_NAME};" >> /docker-entrypoint-initdb.d/init_psql.sql && \

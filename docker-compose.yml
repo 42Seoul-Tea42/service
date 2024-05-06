@@ -53,6 +53,10 @@ services:
     depends_on:
       postgresql:
         condition: service_healthy
+      redis:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
 
   redis:
     container_name: redis
@@ -62,6 +66,12 @@ services:
     networks:
       - tea42_network
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
 
   postgresql:
     container_name: postgresql
@@ -83,6 +93,20 @@ services:
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+
+  mongo:
+    container_name: mongo
+    image: mongo:4.4.9
+    expose:
+      - "27017"
+    networks:
+      - tea42_network
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "mongo --eval 'db.runCommand({ connectionStatus: 1 })'"]
       interval: 10s
       retries: 5
       start_period: 30s
