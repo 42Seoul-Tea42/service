@@ -21,12 +21,8 @@ ENV     PATH="/usr/app/venv/bin:$PATH"
 COPY requirements.txt /usr/app/
 RUN pip install -r requirements.txt
 
-# UWSGI 프로파일 설정 및 실행 파일에 대한 심볼릭 링크 설정
-RUN     UWSGI_PROFILE_OVERRIDE=ssl=true UWSGI_SSLDIR=/etc/ssl \
-        ln -s /usr/local/bin/uwsgi /usr/bin/uwsgi
-
 # 사용자 및 그룹 생성
-RUN     groupadd -r beTeam && useradd -r -g beTeam beMaster
+RUN groupadd -r beTeam && useradd -r -g beTeam beMaster
 
 # 컨테이너가 시작될 때 실행할 명령 지정
-CMD ["uwsgi", "--uid", "beMaster", "srcs/uwsgi.ini"]
+CMD ["gunicorn", "-k", "eventlet", "-c", "./srcs/gunicorn.py", "wsgi:application"]
