@@ -25,4 +25,4 @@ RUN pip install -r requirements.txt
 RUN groupadd -r beTeam && useradd -r -g beTeam beMaster
 
 # 컨테이너가 시작될 때 실행할 명령 지정
-CMD ["gunicorn", "-k", "eventlet", "-c", "./srcs/gunicorn.py", "wsgi:application"]
+CMD ["gunicorn", "-k", "gevent", "-c", "./srcs/gunicorn.py", "wsgi:application"]
