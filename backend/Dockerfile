@@ -1,5 +1,5 @@
 # Python 3.12-slim을 기반으로 하는 Docker 이미지
-FROM	python:3.12-slim
+FROM    python:3.12-slim
 
 # 작업 디렉토리 설정
 WORKDIR /usr/app/
@@ -21,12 +21,8 @@ ENV     PATH="/usr/app/venv/bin:$PATH"
 COPY requirements.txt /usr/app/
 RUN pip install -r requirements.txt
 
-# UWSGI 프로파일 설정 및 실행 파일에 대한 심볼릭 링크 설정
-RUN     UWSGI_PROFILE_OVERRIDE=ssl=true UWSGI_SSLDIR=/etc/ssl \
-        ln -s /usr/local/bin/uwsgi /usr/bin/uwsgi
-
-# 사용자 및 그룹 생성
-RUN     groupadd -r beTeam && useradd -r -g beTeam beMaster
+# ENV PYTEST=True
+# CMD [ "tail", "-f" ]
 
 # 컨테이너가 시작될 때 실행할 명령 지정
-CMD ["uwsgi", "--uid", "beMaster", "srcs/uwsgi.ini"]
+CMD ["gunicorn", "-k", "gevent", "-c", "/usr/app/srcs/gunicorn.py", "wsgi:application"]
