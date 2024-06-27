@@ -1,0 +1,110 @@
+version: "3"
+
+services:
+  nginx:
+    container_name: nginx
+    image: leovim5072/matcha-nginx-react:latest
+    networks:
+      - tea42_network
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+    restart: always
+    depends_on:
+      - backend
+
+  backend:
+    container_name: backend
+    image: leovim5072/matcha-backend:latest
+    volumes:
+      - backend:/usr/app/srcs
+    networks:
+      - tea42_network
+    env_file:
+      - .env
+    expose:
+      - "5000"
+      - "5001"
+      - "5002"
+    restart: always
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+
+  redis:
+    container_name: redis
+    image: redis:6.2.5
+    expose:
+      - "6379"
+    networks:
+      - tea42_network
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  postgresql:
+    container_name: postgresql
+    image: leovim5072/matcha-postgres:latest
+    expose:
+      - "5432"
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+    env_file:
+      - .env
+    networks:
+      - tea42_network
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+
+  mongo:
+    container_name: mongo
+    image: mongo:4.4.9
+    expose:
+      - "27017"
+    command: ["mongod", "--logpath", "/dev/null"]
+    networks:
+      - tea42_network
+    restart: always
+    healthcheck:
+      test:
+        ["CMD-SHELL", "mongo --eval 'db.runCommand({ connectionStatus: 1 })'"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  front_repo:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${PWD}/frontend"
+  backend:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${PWD}/backend"
+  postgresql:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${PWD}/service/postgresql/database"
+
+networks:
+  tea42_network:
+    driver: bridge
