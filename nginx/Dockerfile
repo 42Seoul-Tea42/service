@@ -20,7 +20,7 @@ FROM    nginx
 
 # front static resources move
 # COPY --from=builder usr/app/out /usr/share/nginx/html
-COPY  out/ /usr/share/nginx/html
+# COPY  out/ /usr/share/nginx/html
 
 # Install nginx
 RUN		apt-get update
